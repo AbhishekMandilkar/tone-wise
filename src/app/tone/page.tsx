@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
+import {toast} from "sonner";
 
 function Page() {
   const queryParams = useSearchParams();
@@ -23,12 +24,11 @@ function Page() {
   );
   console.log(loading);
   const responseString = data?.text as string;
-
-  if (loading) {
-    return (
-      <div className="flex flex-col border-2  h-full w-screen flex-1  justify-center items-center"></div>
-    );
-  }
+  
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(responseString);
+    toast.success("Copied to clipboard");
+  };
 
   return (
     <div className="flex flex-col md:px-6 h-full items-center justify-center mt-[-100px]">
@@ -55,7 +55,7 @@ function Page() {
                 <Button
                   variant="default"
                   className="mt-4"
-                  onClick={() => navigator.clipboard.writeText(responseString)}
+                  onClick={copyToClipboard}
                 >
                   <Clipboard className="h-4 w-4 mr-2" />
                   Copy to clipboard

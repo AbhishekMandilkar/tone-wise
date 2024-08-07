@@ -9,7 +9,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { AuroraBackground } from "@/components/AuraBackground";
-import NextTopLoader from 'nextjs-toploader';
+import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Tonewise",
@@ -31,7 +32,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="h-screen mx-auto w-4/6">
-      <NextTopLoader color="#000" showSpinner />
+        <NextTopLoader color="#000" showSpinner />
+        <Toaster position="bottom-center"/>
         <div className={`${poppins.className} flex flex-col flex-1 h-full`}>
           <Header />
           <main className="flex-1 h-full">
