@@ -47,15 +47,15 @@ export function UserNav(props: { user: KindeUser | null }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             Plan:
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogoutLink>Log out</LogoutLink>
-        </DropdownMenuItem>
+        <LogoutLink>
+          <DropdownMenuItem className="cursor-pointer">Log out</DropdownMenuItem>
+        </LogoutLink>
       </DropdownMenuContent>
     </DropdownMenu>
   );

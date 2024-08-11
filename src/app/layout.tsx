@@ -27,22 +27,16 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, getUser } = getKindeServerSession();
-  const user = await getUser();
-  return (
-    <html lang="en">
-      <body className="h-screen mx-auto w-4/6">
-        <NextTopLoader color="#000" showSpinner />
-        <Toaster position="bottom-center"/>
-        <div className={`${poppins.className} flex flex-col flex-1 h-full`}>
-          <Header />
-          <main className="flex-1 h-full">
-            <AuroraBackground className="absolute top-0 left-0 w-full h-full z-10">
-              <div className="z-20">{children}</div>
-            </AuroraBackground>
-          </main>
-        </div>
-      </body>
-    </html>
-  );
+   return (
+     <html lang="en">
+       <body className="h-screen mx-auto w-11/12 sm:w-3/6">
+         <NextTopLoader color="#000" showSpinner />
+         <Toaster position="bottom-center" />
+         <div className={`flex flex-col flex-1 h-full`}>
+           <Header />
+           <main className="flex-1 h-full flex-col flex">{children}</main>
+         </div>
+       </body>
+     </html>
+   );
 }
