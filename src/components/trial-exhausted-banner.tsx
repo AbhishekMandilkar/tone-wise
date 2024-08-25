@@ -22,7 +22,7 @@ const TrailExhaustedBanner = () => {
       </AlertTitle>
       <AlertDescription className="text-yellow-700">
         <p className="mb-3">
-          You've reached your daily usage limit. To continue using the service:
+         {` You've reached your daily usage limit. To continue using the service:`}
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
