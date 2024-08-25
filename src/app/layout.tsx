@@ -8,9 +8,10 @@ import {
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
-import { AuroraBackground } from "@/components/AuraBackground";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/sonner";
+import CurrentBreakPoint from "@/components/CurrentBreakPoint";
+import { isDev } from "@/lib/utils";
 
 export const metadata = {
   title: "Tonewise",
@@ -27,16 +28,18 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-   return (
-     <html lang="en">
-       <body className="h-screen mx-auto w-11/12 sm:w-3/6">
-         <NextTopLoader color="#000" showSpinner />
-         <Toaster position="bottom-center" />
-         <div className={`flex flex-col flex-1 h-full`}>
-           <Header />
-           <main className="flex-1 h-full flex-col flex">{children}</main>
-         </div>
-       </body>
-     </html>
-   );
+  return (
+    <html lang="en">
+      <body className="h-screen mx-auto">
+        <NextTopLoader color="#000" showSpinner />
+        <Toaster position="bottom-center" />
+        <div className={`flex flex-col flex-1 h-full`}>
+          <main className="flex-1 h-full flex-col flex items-center">
+            {children}
+          </main>
+          {isDev && <CurrentBreakPoint />}
+        </div>
+      </body>
+    </html>
+  );
 }

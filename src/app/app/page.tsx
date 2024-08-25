@@ -1,8 +1,5 @@
-import MainCTA from "@/components/MainCTA";
-import TextInputWithTones from "@/components/TextInputWithTones";
+import App from "@/components/App";
 
-export default function Dashboard() {
-  return (
-    <TextInputWithTones />
-  );
+export default async function AppPage() {
+  return <App />;
 }

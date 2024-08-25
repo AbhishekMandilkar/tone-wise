@@ -11,3 +11,9 @@ export const makeStringTitleCase = (str: string) => {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   })
 }
+
+export const makeFirstLetterUpperCase = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+export const isDev = process.env.NODE_ENV === "development"

@@ -11,15 +11,20 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {useUserSubscription} from "@/contexts/user-subscription";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/dist/types";
 
 export function UserNav(props: { user: KindeUser | null }) {
   const { user } = props;
+  const userSubscription = useUserSubscription();
+  const availableTrials = userSubscription.availableTrials;
+  const isSubscribed = userSubscription.isSubscribed;
   const avatar =
     user?.picture ||
     `${user?.given_name?.[0]}
               ${user?.family_name?.[0]}`;
+
 
   return (
     <DropdownMenu modal={false}>
@@ -48,13 +53,15 @@ export function UserNav(props: { user: KindeUser | null }) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="cursor-pointer">
-            Plan:
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            Available trials: 
+            <DropdownMenuShortcut>{availableTrials} / 10</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <LogoutLink>
-          <DropdownMenuItem className="cursor-pointer">Log out</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Log out
+          </DropdownMenuItem>
         </LogoutLink>
       </DropdownMenuContent>
     </DropdownMenu>

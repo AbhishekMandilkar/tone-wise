@@ -1,44 +1,41 @@
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import axios, { AxiosRequestConfig } from "axios";
 
-const useFetch = <T>(url: string) => {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+const useFetch = <T>({
+  url,
+  params,
+  onComplete,
+}: {
+  url: string;
+  params?: AxiosRequestConfig;
+  onComplete?: (data: T) => void;
+}) => {
+  const [response, setResponse] = useState<T | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setloading] = useState(true);
 
-  const fetchData = useCallback(
-    async (source: axios.CancelTokenSource) => {
-      try {
-        setLoading(true);
-        const response = await axios.get<T>(url, {
-          cancelToken: source.token,
-        });
-        setData(response.data);
-        setError(null);
-      } catch (err: any) {
-        if (axios.isCancel(err)) {
-          console.log("Request canceled:", err.message);
-        } else {
-          setError(err);
-        }
-      } finally {
-        setLoading(false);
-      }
-    },
-    [url]
-  );
+  const fetchData = () => {
+    axios
+      .get(url, {
+        params,
+      })
+      .then((res) => {
+        setResponse(res.data);
+        onComplete && onComplete(res.data);
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => {
+        setloading(false);
+      });
+  };
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    fetchData();
+  }, [url]);
 
-    fetchData(source);
-
-    return () => {
-      source.cancel("Component unmounted");
-    };
-  }, [url, fetchData]);
-
-  return { data, loading, error };
+  return { response, error, loading };
 };
 
 export default useFetch;

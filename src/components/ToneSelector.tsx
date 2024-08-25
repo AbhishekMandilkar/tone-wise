@@ -10,9 +10,11 @@ import { AnimatePresence, motion } from "framer-motion";
 function ToneSelector({
   onChange,
   value,
+  disabled,
 }: {
   onChange: (tone: string) => void;
   value: string;
+  disabled?: boolean;
 }) {
   const toneList = useMemo(
     () => Object.values(Tones).map(makeStringTitleCase),
@@ -21,9 +23,10 @@ function ToneSelector({
   return (
     <ToggleGroup
       type="single"
-      className="flex justify-around transition-all ease-in-out duration-100"
+      className="flex justify-around transition-all ease-in-out duration-100 flex-wrap"
       value={value}
       onValueChange={(value) => onChange(value)}
+      disabled={disabled}
     >
       {toneList.map((tone) => (
         <ToggleGroupItem
@@ -34,17 +37,7 @@ function ToneSelector({
           onSelect={(value) => console.log(value)}
           className="flex-1 transition-[width] ease-in-out duration-100"
         >
-          <AnimatePresence>
-            {value === tone && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <CheckIcon className="h-4 w-4 mr-2" />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <>{value === tone && <CheckIcon className="h-4 w-4 mr-2" />}</>
           {tone}
         </ToggleGroupItem>
       ))}

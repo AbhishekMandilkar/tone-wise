@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model subscriptions {
+  id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code  String  @db.VarChar(255)
+  users users[]
+}
+
+model rephrases {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?   @db.VarChar(255)
+  created_date DateTime @default(now()) @db.Timestamptz(6)
+  input_text   String
+  tone         String    @db.VarChar(50)
+  response     String
+  is_deleted   Boolean?  @default(false)
+  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id               String         @id @db.VarChar(255)
+  created_date          DateTime?      @default(now()) @db.Timestamptz(6)
+  is_deleted            Boolean?       @default(false)
+  available_trials      Int?           @default(0)
+  is_subscribed         Boolean?       @default(false)
+  subscription_end_date DateTime?      @db.Timestamptz(6)
+  subscription_id       String?        @db.Uuid
+  rephrases             rephrases[]
+  subscriptions         subscriptions? @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscription")
+}

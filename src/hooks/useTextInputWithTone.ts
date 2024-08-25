@@ -1,8 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import useRequestHeaders from "./useRequestHeaders";
+import {rephrases} from "@prisma/client";
+import {useUserRephrases} from "@/contexts/user-rephrases";
 
 const FormSchema = z.object({
   text: z
@@ -19,19 +23,27 @@ const FormSchema = z.object({
 });
 
 function useTextInputWithTone() {
-  const navigation = useRouter();
+  const {setRephrases} = useUserRephrases();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-
-    navigation.push("/tone?prompt=" + data.text + `&tone=${data.tone}`);
+    const { text, tone } = data;
+    setLoading(true);
+    const response = await axios.get<{
+      text: string;
+      res: rephrases;
+    }>(`/api/openai?prompt=${text}&tone=${tone}`);
+    setRephrases(prev => [response.data.res, ...prev, ]);
+    setLoading(false);
   }
   return {
     form,
     onSubmit,
+    loading,
   };
 }
 
