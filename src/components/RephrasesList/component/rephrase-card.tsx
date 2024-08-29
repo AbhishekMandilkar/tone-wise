@@ -1,11 +1,16 @@
-import {Badge} from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {Separator} from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { makeFirstLetterUpperCase, makeStringTitleCase } from "@/lib/utils";
 import { rephrases } from "@prisma/client";
 import { formatRelative } from "date-fns";
-import { ArrowRightLeft, Clipboard, DeleteIcon, Trash2Icon } from "lucide-react";
+import {
+  ArrowRightLeft,
+  Clipboard,
+  DeleteIcon,
+  Trash2Icon,
+} from "lucide-react";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
 
@@ -23,13 +28,13 @@ const RephraseCard = (props: { rephrase: rephrases }) => {
   };
 
   return (
-    <Card className=" max-w-[100%]  transition-all ease-in-out duration-100 space-y-0.5 border">
+    <Card className=" max-w-[100%]  transition-all ease-in-out duration-100 space-y-0.5 border user-select-none flex flex-col">
       <div className="bg-slate-50 p-2 rounded-t-lg border-b">
         <p className="max-w-[90%] text-gray-400 text-sm truncate">
           {input_text}
         </p>
       </div>
-      <div className="p-2 rounded-b-lg text-base text-slate-900">
+      <div className="p-2 rounded-b-lg text-base text-slate-900 flex-1">
         {response}
       </div>
       <div className="p-2 flex justify-between items-center">
@@ -40,7 +45,10 @@ const RephraseCard = (props: { rephrase: rephrases }) => {
             <Separator orientation="vertical" />
             {/* <ArrowRightLeft className="h-4 w-4" /> */}
           </Badge>
-          <div className="border rounded p-1 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+          <div
+            className="border rounded p-1 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
+            onClick={() => copyToClipboard()}
+          >
             <Clipboard className="h-4 w-4" />
           </div>
         </span>

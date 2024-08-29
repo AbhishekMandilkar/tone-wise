@@ -43,7 +43,7 @@ export default function TextInputWithTones(props: {
             </FormItem>
           )}
         />
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
           <FormField
             control={form.control}
             name="tone"

@@ -30,15 +30,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="h-screen mx-auto">
+      <body className="h-[100vh] mx-auto overflow-y-auto ">
         <NextTopLoader color="#000" showSpinner />
         <Toaster position="bottom-center" />
-        <div className={`flex flex-col flex-1 h-full`}>
-          <main className="flex-1 h-full flex-col flex items-center">
-            {children}
-          </main>
-          {isDev && <CurrentBreakPoint />}
-        </div>
+        <main className="flex-col flex items-center">{children}</main>
+        {isDev && <CurrentBreakPoint />}
       </body>
     </html>
   );

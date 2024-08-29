@@ -32,7 +32,7 @@ export const UserSubscriptionProvider = ({
     availableTrials: 0,
     isLimitExceeded: false,
   });
-  const { loading } = useFetch<
+  const { loading, error } = useFetch<
     Omit<UserSubscriptionContextType, "decrementTrial">
   >({
     url: `/api/user-subscription?userId=${user.id}`,
@@ -43,10 +43,14 @@ export const UserSubscriptionProvider = ({
 
   if (loading) {
     return (
-      <div className="flex h-full justify-center items-center">
+      <div className="flex h-screen justify-center items-center border-2 w-screen">
         <Loader2Icon className="animate-spin h-10 w-10" />
       </div>
     );
+  }
+
+  if (error) {
+    throw new Error(error);
   }
 
   return (
