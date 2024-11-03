@@ -1,8 +1,7 @@
 import React from "react";
-import Header from "./Header";
-import { UserNav } from "./User";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import CustomProviders from "./custom-providers/custom-providers";
+import AppSidebar from "./AppSideBar";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const { getUser } = getKindeServerSession();
@@ -14,7 +13,7 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <CustomProviders user={user}>
-      <Header right={<UserNav user={user} />} />
+      <AppSidebar />
       {children}
     </CustomProviders>
   );

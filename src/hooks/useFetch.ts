@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios, { AxiosRequestConfig } from "axios";
+import {objectToQueryParams, QueryParams} from "@/lib/utils";
 
 const useFetch = <T>({
   url,
@@ -14,9 +15,15 @@ const useFetch = <T>({
   const [error, setError] = useState("");
   const [loading, setloading] = useState(true);
 
-  const fetchData = () => {
+  const fetchData = (queryParams?: QueryParams) => {
+    setloading(true);
+    let newUrl = url;
+    if (queryParams) {
+      const params = objectToQueryParams(queryParams);
+      newUrl += `?${params}`;
+    }
     axios
-      .get(url, {
+      .get(newUrl, {
         params,
       })
       .then((res) => {
@@ -35,8 +42,8 @@ const useFetch = <T>({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
-
-  return { response, error, loading };
+  console.log(loading)
+  return { response, error, loading, fetchData };
 };
 
 export default useFetch;

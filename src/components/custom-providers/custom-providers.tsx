@@ -5,6 +5,8 @@ import UserSubscriptionContext, {
 } from "@/contexts/user-subscription";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/dist/types";
 import React from "react";
+import { SidebarProvider } from "../ui/sidebar";
+import { ThemeProvider } from "./theme-provider";
 
 const CustomProviders = ({
   children,
@@ -14,9 +16,16 @@ const CustomProviders = ({
   user: KindeUser;
 }) => {
   return (
-    <UserSubscriptionProvider user={user}>
-      <UserRephrasesProvider>{children}</UserRephrasesProvider>
-    </UserSubscriptionProvider>
+    <ThemeProvider
+      attribute="class"
+            defaultTheme="system"
+    >
+      <UserSubscriptionProvider user={user}>
+        <UserRephrasesProvider>
+          <SidebarProvider>{children}</SidebarProvider>
+        </UserRephrasesProvider>
+      </UserSubscriptionProvider>
+    </ThemeProvider>
   );
 };
 

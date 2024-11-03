@@ -1,32 +1,59 @@
 "use client";
-import useFetch from "@/hooks/useFetch";
-import { rephrases } from "@prisma/client";
-import React from "react";
-import RephraseCard from "./component/rephrase-card";
+import {useState} from "react";
 import {useUserRephrases} from "@/contexts/user-rephrases";
-import {Skeleton} from "../ui/skeleton";
+import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "../ui/sidebar";
+import NavProjectsSkeleton from "../NavSkeletonLoader";
+import {Input} from "../ui/input";
+import {useDebouncedCallback} from "use-debounce";
 
 const RephrasesList = () => {
-  const { loading, rephrases, error } = useUserRephrases();
-  if (loading)
-    return (
-      <div className="grid grid-cols-3 gap-4">
-        <Skeleton className="h-[125px] w-[250px] rounded-xl animate-pulse" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-      </div>
-    );
+  const { loading, rephrases, error, fetchData } = useUserRephrases();
+
+  const [value, setValue] = useState("");
+  // Debounce callback
+  const debounced = useDebouncedCallback(
+    // function
+    (value) => {
+      setValue(value);
+      fetchData(value ? {query: value} : undefined);
+    },
+    // delay in ms
+    600
+  );
+
+
 
   return (
-    <div className="grid  grid-cols-1 sm:grid-cols-3 gap-4">
-      {rephrases.map((rephrase) => (
-        <RephraseCard key={rephrase.id} rephrase={rephrase} />
-      ))}
-    </div>
+    <SidebarMenu className="space-y-2">
+      <Input
+        placeholder="Search..."
+        onChange={(e) => debounced(e.target.value)}
+        defaultValue={value}
+      />
+      {(() => {
+        if (loading) {
+          return <NavProjectsSkeleton />;
+        }
+
+        if (error) {
+          return <div>Error: {error}</div>;
+        }
+
+        if (!rephrases.length) {
+          return <div>No rephrases found</div>;
+        }
+
+        return rephrases.map((rephrase) => (
+          <SidebarMenuItem key={rephrase.response}>
+            <SidebarMenuButton asChild>
+              <a href={rephrase.id}>
+                <span>{rephrase.response}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ));
+      })()}
+    </SidebarMenu>
   );
 };
 
