@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../Header";
-import { UserNav } from "../User";
+import Header from "./Header";
+import { UserNav } from "./User";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import CustomProviders from "../custom-providers/custom-providers";
+import CustomProviders from "./custom-providers/custom-providers";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const { getUser } = getKindeServerSession();

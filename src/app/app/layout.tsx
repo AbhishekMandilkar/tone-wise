@@ -1,3 +1,3 @@
-import AppLayout from "@/components/ui/AppLayout";
+import AppLayout from "@/components/AppLayout";
 
 export default AppLayout;
